@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>NxtHire</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+      <script>
+      $(document).ready(function() {
+    	    $("#btn_submit").click(function() {
+    	      // disable button
+    	      $(this).prop("disabled", true);
+    	      // add spinner to button
+    	      $(this).html(
+    	        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+    	      );
+    	    });
+    	});
+      
+    function authenticate_user() {
+    	userid = document.getElementById('userid').value;
+    	password = document.getElementById('password').value;
+          $.ajax({
+            url:"authenticate.php", //the page containing php script
+            type: "post", //request type,
+            dataType: 'json',
+            data: {userid: userid, password: password},
+            success:function(request, status, error){
+    
+             window.location.href = 'main.php?userid='+userid;
+
+           },
+            error: function (request, status, error) {
+                alert(request.responseText);
+            }
+         });
+     }
+</script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
+  <!-- Brand/logo -->
+  <a class="navbar-brand" href="../home.html"><p class="font-weight-bolder">Home</p></a>
+   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#"><p class="font-weight-bolder">For Employers</p></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="../job/jobs.html"><p class="font-weight-bolder">Browse Jobs</p></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="reviews.html"><p class="font-weight-bolder">Company Reviews</p></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="job/salary.html"><p class="font-weight-bolder">Salaries</p></a>
+    </li>
+  </ul>
+
+
+</div>  
+</nav>
+
+<div class="container">
+
+
+
+   <img src="../../pictures/pic3.jpg" class="mx-auto d-block" style="width:65px"> 
+
+<div class="d-flex justify-content-center align-items-center container ">
+<form>
+
+  <div class="form-line">
+    <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="userid" name="userid" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-line">
+    <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+    <div class="col-sm-10">
+      <input type="password"  class="form-control" id="password" name="password" placeholder="Password">
+ 
+    </div>
+  </div>
+
+<hr>
+
+  <div class="form-inline">
+    <div class="col-sm-10">
+    <label>  <p>   </p> <button type="submit" id="btn_submit" class="btn btn-secondary"  onclick="authenticate_user()">Sign in</button> </label>
+    </div>
+  </div>
+  
+ <div class="form-inline">
+    <div class="col-sm-10">
+ <label>  <href="#" class="btn btn-link" role="button">Forgot Password?</label>
+</div>
+</form>
+<form>
+
+<div class="form-inline">
+
+<label> <p> Do not have account?&emsp; <p>  <button type="submit" class="btn btn-secondary">Sign up</button> </label>
+
+</div>
+ </div>
+
+</form>
+</body>
+</html>
