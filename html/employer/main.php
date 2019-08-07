@@ -22,9 +22,15 @@ $(document).ready(function() {
 } );
 
 
-function updateRecord()
+var job_id = '';
+function getjobid(id)
 {
-	job_id = $('#btnEdit').attr("data-id");
+	job_id = id;
+}
+
+function updateRecord(userid)
+{
+
 	is_active = $('input[name=is_active]:checked').val();//$('#is_active input:radio:checked').val()
 	$.ajax({
         url: '../job/edit.php',    //Your api url
@@ -33,7 +39,8 @@ function updateRecord()
             job_id: job_id,is_active:is_active
         },      //Data as js object
         success: function () {
-        	location.reload();
+        	window.location.href = "main.php?userid="+userid;
+
         },
         error: function (request, status, error) {
             alert(request.responseText);
@@ -74,6 +81,26 @@ require_once '../util/util.php';
 
 $conn = connect_db();
 
+if (isset($_GET['success']) && $_GET['success'] == 1) {
+    echo <<<_END
+<div class="alert alert-success fade in alert-dismissible show" style="margin-top:18px;">
+ <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true" style="font-size:20px">×</span>
+  </button>    <strong>Success!</strong> Job Posted.
+</div>
+
+_END;
+} else if (isset($_GET['success']) && $_GET['success'] != 1) {
+    echo <<<_END
+<div class="alert alert-danger fade in alert-dismissible show">
+ <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true" style="font-size:20px">×</span>
+  </button>    <strong>Failed!</strong> Job not posted.
+</div>
+
+_END;
+}
+
 $userid = isset($_GET['userid']) ? $_GET['userid'] : "";
 echo <<<_END
  <ul class="navbar-nav ml-auto">
@@ -111,7 +138,7 @@ function show_dashboard($conn, $userid)
                                <td>{$row['location']}</td>
                                <td>{$row['salary_range']}</td>
                                <td>{$no_of_applicants}</td>
-                               <td><button id="btnEdit" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-id="{$row['id']}">Edit</button></td>
+                               <td><button id="btnEdit" onclick="getjobid({$row['id']});" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-id="{$row['id']}">Edit</button></td>
                                </tr>
              
                                
@@ -127,7 +154,7 @@ _END;
     }
     $jobs_result->close();
     // show the footer
-    show_tbl_footer();
+    show_tbl_footer($userid);
 
     // close the connection to the db
     util__close_db_connection($conn);
@@ -162,19 +189,28 @@ _END;
 
 function get_jobs_for_user($conn, $userid)
 {
-    $query = "SELECT jp.id,jp.title,jp.description,co.name AS employer_name,jp.create_date AS posting_date,
-              CONCAT(ad.city,',',ad.province,',',ad.country) AS location,sr.salary_range
-        FROM job_post jp
-        INNER JOIN address ad
-            ON jp.address_id = ad.id
-        INNER JOIN salary_ranges sr
-            ON jp.salary_range_id = sr.id
-        INNER JOIN employer_user eu
-            ON jp.user_id = eu.id
-        INNER JOIN company co
-            ON co.id = eu.company_id
-        WHERE jp.is_active = 1
-        AND eu.user_name = '{$userid}' ORDER BY jp.create_date ";
+    $query = "SELECT
+    jp.id,
+    jp.title,
+    jp.description,
+    co.name AS employer_name,
+    jp.create_date AS posting_date,
+    jl.name AS location,
+    sr.salary_range
+FROM
+    job_post jp
+INNER JOIN job_location jl ON
+    jp.address_id = jl.id
+INNER JOIN salary_ranges sr ON
+    jp.salary_range_id = sr.id
+INNER JOIN employer_user eu ON
+    jp.user_id = eu.id
+INNER JOIN company co ON
+    co.id = eu.company_id
+WHERE
+    jp.is_active = 1 AND eu.user_name = '{$userid}'
+ORDER BY
+    jp.create_date ";
 
     $result = $conn->query($query);
     if (! $result) {
@@ -203,7 +239,7 @@ function get_applicants_count_for_job($conn, $job_id)
     return $count;
 }
 
-function show_tbl_footer()
+function show_tbl_footer($userid)
 {
     echo <<<_END
     
@@ -225,7 +261,7 @@ function show_tbl_footer()
        <form id="editJobform">
             <label  class="radio-inline">
        
-            <input type="radio"  id="is_active" name="is_active" value=1>Active
+            <input type="radio"  id="is_active" name="is_active" value=1 checked>Active
             </label>
            <label  class="radio-inline">
        
@@ -238,7 +274,7 @@ function show_tbl_footer()
 
       </div>
      <div class="modal-footer">
-        <button type="button" id="btnChangeEdit" name="btnChangeEdit" class="btn btn-primary mr-auto" onclick="updateRecord()" >Change</button>
+        <button type="button" id="btnChangeEdit" name="btnChangeEdit" class="btn btn-primary mr-auto" onclick="updateRecord('{$userid}')" >Change</button>
       
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
@@ -251,6 +287,10 @@ _END;
 }
 
 ?>
+
+
+
+
 
 
 

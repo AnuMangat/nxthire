@@ -8,8 +8,8 @@ if (isset($_POST['userid']) && isset($_POST['password'])) {
     $rec_un = $_POST['userid'];
     $rec_pw = $_POST['password'];
 
-    $un_temp = sanitizeMySQL($conn, $rec_un);
-    $pw_temp = sanitizeMySQL($conn, $rec_pw);
+    $un_temp = util__sanitizeMySQL($conn, $rec_un);
+    $pw_temp = util__sanitizeMySQL($conn, $rec_pw);
 
     $query = "SELECT name,password,is_active,id FROM `employer_user` WHERE user_name = '$un_temp'";
     $result = $conn->query($query);

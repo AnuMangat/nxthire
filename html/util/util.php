@@ -2,7 +2,7 @@
 require_once '../db_login/login.php';
 
 
-function sanitizeString($var)
+function util__sanitizeString($var)
 {
     $var = stripslashes($var);
     $var = strip_tags($var);
@@ -10,10 +10,10 @@ function sanitizeString($var)
     return $var;
 }
 
-function sanitizeMySQL($connection, $var)
+function util__sanitizeMySQL($connection, $var)
 {
     $var = $connection->real_escape_string($var);
-    $var = sanitizeString($var);
+    $var = util__sanitizeString($var);
     return $var;
 }
 
@@ -32,7 +32,7 @@ function connect_db()
     return $conn;
 }
 
-function close_db_connection($conn)
+function util__close_db_connection($conn)
 {
     $conn->close();
 }
@@ -51,34 +51,41 @@ function util__insert_session_info($conn,$un_temp,$userid,$is_candidate=1)
 
     
 }
-function util__get_session_info($conn,$userid)
+function util__get_session_info($conn,$user)
 {
     $resp = array();
-    $query = "SELECT * FROM `user_session` us
+    $query = "(SELECT eu.id AS userid,us.id AS sessionid FROM `user_session` us
 
 INNER JOIN employer_user eu 
 
 ON us.user_id = eu.id
-WHERE eu.user_name = '{$userid}'
-
+WHERE eu.user_name = '{$user}'
+ORDER BY us.last_login DESC LIMIT 1
+)
 UNION
 
-(SELECT * FROM `user_session` us
+(SELECT eu.id AS userid,us.id AS sessionid FROM `user_session` us
 
 INNER JOIN employer_user eu 
 
 ON us.user_id = eu.id
-WHERE eu.user_name = '{$userid}'
+WHERE eu.user_name = '{$user}'
+ORDER BY us.last_login DESC LIMIT 1
 )
 
-ORDER BY last_login DESC LIMIT 1";
+";
 
     $result = $conn->query($query);
-
-     if($result->num_rows)
+    
+    if(!$result)
     {
-        $resp = $result->fetch_array(MYSQLI_NUM);
+        echo "Error:". $conn->error;
+        return false;
     }
+    
+
+
+    $resp = $result->fetch_assoc();
 
     return $resp;
 }
