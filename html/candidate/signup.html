@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<div id="header"></div>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="/nxthire/js/login_replace.js"></script>
+<script>
+	hide_login_text();
+	
+	/* $(function() { //shorthand document.ready function
+	    $('#login_form').on('submit', function(e) { //use on if jQuery 1.7+
+	        e.preventDefault();  //prevent form from submitting
+	        var data = $("#login_form :input").serializeArray();
+	        console.log(data); //use the console for debugging, F12 in Chrome, not alerts
+	    });
+	});
+	 */
+  	    function add_user()
+  	    {
+  	    	
+  	    	//event.preventDefault();
+  	    	
+  	    
+
+			name = $('#name').val();
+			uname = $('#uname').val();
+			email = $('#email').val();
+			
+			street_number = $('#street_number').val();
+
+			street_name = $('#street_name').val();
+
+			city = $('#city').val();
+			province = $('#province').val();
+
+			country = $('#country').val();
+
+			postal_code = $('#postal_code').val();
+
+			phone = $('#phone').val();
+
+			pswd = $('#pswd').val();
+			
+	          $.ajax({
+	            url:"add_user.php", //the page containing php script
+	            type: "post", //request type,
+	            dataType: 'json',
+	            data: {name: name,
+	            	  uname: uname,
+	            	  email:email,
+	            	  street_number: street_number,
+	            	  street_name: street_name,
+	            	  city: city,
+	            	  province: province,
+	            	  country: country,
+	            	  postal_code: postal_code,
+	            	  phone: phone,
+	            	  pswd: pswd},
+	            success:function(request, status, error){
+	            	            	
+	            
+	    
+	             window.location.href = 'main.php?userid='+email;
+	             
+
+	           },
+	            error: function (request, status, error) {
+	                alert(error);
+	            }
+	         });
+	
+  	    }
+
+	
+	
+	
+</script>
+</head>
+<body>
+
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+
+				<form  id="createuserform">
+					<div class="form-group">
+						<label for="name">Name:</label> <input type="text"
+							class="form-control" id="name" placeholder="Enter Name"
+							name="name" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+					<div class="form-group">
+						<label for="uname">Username:</label> <input type="text"
+							class="form-control" id="uname" placeholder="Enter username"
+							name="uname" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+					<div class="form-group">
+						<label for="uname">Email:</label> <input type="text"
+							class="form-control" id="email" placeholder="Enter email"
+							name="email" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+
+
+					<label for="address">Address</label>
+					<div class="form-inline">
+						<input type="text" class="form-control" id="street_number"
+							placeholder="Enter street number" name="street_number" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+
+
+						<input type="text" class="form-control" id="street_name"
+							placeholder="Enter street name " name="street_name" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+
+						<input type="text" class="form-control" id="city"
+							placeholder="Enter City " name="city" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+
+
+
+
+
+						<input type="text" class="form-control" id="province"
+							placeholder="Enter Province " name="province" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+
+						<input type="text" class="form-control" id="country"
+							placeholder="Enter Country " name="province" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+
+						<input type="text" class="form-control" id="postal_code"
+							placeholder="Enter Postal Code " name="postal_code" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+
+
+					</div>
+					<div class="form-group">
+						<label for="Phone">Phone:</label> <input type="text"
+							class="form-control" id="phone" placeholder="Phone #: (111) 111-1111"
+							name="phone" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+
+					<div class="form-group">
+						<label for="pwd">Password:</label> <input type="password"
+							class="form-control" id="pswd" placeholder="Enter password"
+							name="pswd" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+					<button type="button" id="btnSubmit" class="btn btn-secondary" onclick="add_user()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="footer"></div>
+	<script>
+		$("#header").load("/nxthire/html/util/header.html");
+		$("#footer").load("/nxthire/html/util/footer.html");
+
+		$(document).ready(function() {
+			replace_login('<?php echo $userid;?>');
+		});
+	</script>
+</body>
+</html>

@@ -9,46 +9,25 @@ echo <<<END
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>NxtHire</title>
+    <title>NxtHire</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+   
 </head>
 <body>
 
-<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
-  <!-- Brand/logo -->
-  <a class="navbar-brand" href="#=../home.html"><p class="font-weight-bolder">Home</p></a>
-   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-  <!-- Links -->
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="../employer/signup.html"><p class="font-weight-bolder">For Employers</p></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#"><p class="font-weight-bolder">Browse Jobs</p></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="../employer/reviews.html"><p class="font-weight-bolder">Company Reviews</p></a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="salary.html"><p class="font-weight-bolder">Salaries</p></a>
-    </li>
-  </ul>
-</nav>
+<div id="header"></div> 
 END;
 
 // check if job title and location provided in the search
 
-$job_title_to_search = isset($_POST['job_title']) ? sanitizeMySQL($conn, $_POST['job_title']) : "";
+$job_title_to_search = isset($_POST['job_title']) ? util__sanitizeMySQL($conn, $_POST['job_title']) : "";
 
-$location_to_search = isset($_POST['location']) ? sanitizeMySQL($conn, $_POST['location']) : "";
+$location_to_search = isset($_POST['location']) ? util__sanitizeMySQL($conn, $_POST['location']) : "";
 $jobs = get_jobs_for_search($conn, $job_title_to_search, $location_to_search);
 
 show_jobs($jobs);
@@ -67,7 +46,7 @@ function get_jobs_for_search($conn, $job_title_to_search, $location_to_search)
     {
       $where .=  "AND CONCAT(ad.city,',',ad.province) REGEXP '^({$location_to_search})'";
     }
-    $query = "SELECT jp.id,jp.description AS job_title,co.name AS employer_name,jp.create_date AS posting_date,
+    $query = "SELECT jp.id,jp.description, jp.title,co.name AS employer_name,jp.create_date AS posting_date,
               CONCAT(ad.city,',',ad.province,',',ad.country) AS location,sr.salary_range
         FROM job_post jp
         INNER JOIN address ad
@@ -115,7 +94,7 @@ _END;
             $salary = ($show_salary) ? $row['salary_range'] : "\$XXXXXX - \$XXXXXX";
 
             echo <<<_END
-                           <tr><td>{$row['job_title']}</td>
+                           <tr><td>{$row['title']}</td>
                                <td>{$row['employer_name']}</td>
                                <td>{$row['posting_date']}</td>
                                <td>{$row['location']}</td>
@@ -138,6 +117,11 @@ _END;
     </tbody>
   </table>
 </div>
+<script> 
+
+$("#header").load("/nxthire/html/util/header.html");
+$("#footer").load("/nxthire/html/util/footer.html");
+     </script>
 </body>
 </html>
 _END;

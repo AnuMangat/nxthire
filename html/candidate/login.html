@@ -22,7 +22,7 @@
             url:"../util/authenticate.php", //the page containing php script
             type: "post", //request type,
             dataType: 'json',
-            data: {userid: userid, password: password,employee:1},
+            data: {userid: userid, password: password,candidate:1},
             success:function(request, status, error){
     
              window.location.href = 'main.php?userid='+userid;

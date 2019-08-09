@@ -1,0 +1,58 @@
+<script>
+
+
+var $_GET=[];
+function get_userid()
+{
+
+	window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(a,name,value){$_GET[name]=value;});
+	return $_GET['userid'];
+}
+
+function add_skill()
+{
+	userid = get_userid();
+	name = $('#skill_name').val();
+	description = $('#skill_description').val();
+		 $.ajax({
+	            url:"addskill.php", //the page containing php script
+	            type: "post", //request type,
+	            dataType: 'json',
+	            data: {userid: userid, skill_name: name,skill_description:description},
+	            success:function(request, status, error){
+	           	 window.location.href = 'skill.php?userid='+userid;
+	    
+	           },
+	            error: function (request, status, error) {
+	                alert(request.responseText);
+	            	event.preventDefault();
+	            }
+	         });
+
+	
+}
+
+
+</script>
+<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+
+				<form  id="addskillform">
+					<div class="form-group">
+						<label for="name">Skill:</label> 
+						<input type="text" class="form-control" id="skill_name" 	name="skill_name" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+					<div class="form-group">
+						<label for="name">Description:</label> 
+						<input type="text"	class="form-control" id="skill_description" name="skill_description" required>
+						<div class="valid-feedback">Valid.</div>
+						<div class="invalid-feedback">Please fill out this field.</div>
+					</div>
+					<button type="button" id="btnSubmit" class="btn btn-secondary" onclick="add_skill()">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>

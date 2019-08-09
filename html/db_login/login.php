@@ -1,7 +1,7 @@
 <?php // login.php
 
-    $hn = ''; 
-    $un = '';
-    $pw = '';  
-    $db = ''; 
+    $hn = 'localhost'; 
+    $un = 'magnate_prj';
+    $pw = 'test123';  
+    $db = 'mangata_prj'; 
 ?>

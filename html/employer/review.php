@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-   
+  
 </head>
 
-<div id="header"></div>
-<body>
 
+<body>
+<div id="header"></div> 
  
  
 <h1 style="text-align:center;">Company Reviews </h1>
