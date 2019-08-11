@@ -415,8 +415,7 @@ function show_dashboard_exp($conn, $userid)
     if ($res->num_rows > 0) {
 
         while ($row = $res->fetch_assoc()) {
-            
-           
+
             $reference = $row['use_as_reference'] == 1 ? "YES" : "NO";
 
             echo <<<_END
@@ -496,7 +495,6 @@ INNER JOIN address ad ON
     ad.id = ce.company_address
 WHERE
     c.user_name = '$userid'";
-    
 
     $result = $conn->query($query);
     if (! $result) {
@@ -560,8 +558,9 @@ _END;
      $("#footer").load("/nxthire/html/util/footer.html");
 
      $(document).ready(function() {
-     	    replace_login('<?php echo $userid;?>');
-     	   hide_login_text_partial();
+     	  replace_login('<?php echo $userid;?>');
+     	  update_review_path('<?php echo $userid;?>');
+     	  hide_login_text_partial();
      	  $('#addskillModal').find('.modal-body').load('addskill.html');
      	  $('#addeduModal').find('.modal-body').load('addEducation.html');
      	  $('#addexpModal').find('.modal-body').load('addExp.html');

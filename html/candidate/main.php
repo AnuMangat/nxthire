@@ -180,6 +180,8 @@ _END;
 
      $(document).ready(function() {
      	    replace_login('<?php echo $userid;?>');
+     	   update_browse_jobs_path('<?php echo $userid;?>');
+     	  update_review_path('<?php echo $userid;?>');
      	   hide_login_text_partial();
     	    });
 	    

@@ -8,10 +8,7 @@
     	    $("#btn_submit").click(function() {
     	      // disable button
     	      $(this).prop("disabled", true);
-    	      // add spinner to button
-    	      $(this).html(
-    	        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
-    	      );
+    	   show_spinner();
     	    });
     	});
       
@@ -30,9 +27,17 @@
            },
             error: function (request, status, error) {
                 alert(request.responseText);
+                hide_spinner();
+                $('#btn_submit').prop('disabled', false);
             }
          });
      }
+	function redirect_to_signup() {
+	    event.preventDefault();
+		window.location.href ='signup.html';
+	
+
+	}
 </script>
 <div id="header"></div>
 </head>
@@ -81,7 +86,7 @@
 
 <div class="form-inline">
 
-<label> <p> Do not have account?&emsp; <p>  <button type="submit" class="btn btn-secondary">Sign up</button> </label>
+<label> <p> Do not have account?&emsp; <p>  <button type="submit" onclick="redirect_to_signup()" class="btn btn-secondary">Sign up</button> </label>
 
 </div>
  </div>

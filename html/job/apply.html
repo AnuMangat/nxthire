@@ -1,0 +1,70 @@
+<script>
+	var $_GET = [];
+	function get_userid() {
+
+		window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(a,
+				name, value) {
+			$_GET[name] = value;
+		});
+		return $_GET['userid'];
+	}
+
+	function apply_job() {
+		userid = get_userid();
+		jobid = $("#job_id").val();
+		var formData = new FormData();
+		formData.append("userid",userid);
+		formData.append("jobid",jobid);
+		formData.append("resume",$('#resume')[0].files[0]);
+
+		$.ajax({
+			url : "applyjob.php", //the page containing php script
+			type : "post", //request type,
+			processData : false,
+			contentType : false,
+			async : false,
+			cache : false,
+			data : formData,
+			success : function(request, status, error) {
+				window.location.href = 'jobs.php?userid=' + userid;
+
+			},
+			error : function(request, status, error) {
+				alert(request.responseText);
+				event.preventDefault();
+			}
+		});
+
+	}
+</script>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-8">
+
+			<form id="addeduform">
+				<div class="form-group">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="resume">
+						<label class="custom-file-label" for="resume">Upload
+							Resume</label>
+					</div>
+					<div class="valid-feedback">Valid.</div>
+					<div class="invalid-feedback">Please fill out this field.</div>
+				</div>
+				<input type="hidden" id="job_id">
+				<button type="button" id="btnSubmit" class="btn btn-secondary"
+					onclick="apply_job()">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(".custom-file-input").on(
+			"change",
+			function() {
+				var fileName = $(this).val().split("\\").pop();
+				$(this).siblings(".custom-file-label").addClass("selected")
+						.html(fileName);
+			});
+</script>

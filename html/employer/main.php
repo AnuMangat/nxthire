@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>NxtHire</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<div id="header"></div>
+</head>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script
 	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script
@@ -49,32 +42,10 @@ function updateRecord(userid)
     ;
 }
 
-
-</script>
 </script>
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-sm bg-light navbar-light sticky-top">
-		<!-- Brand/logo -->
-		<a class="navbar-brand" href="../home.html"><p
-				class="font-weight-bolder">Home</p></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#collapsibleNavbar">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="collapsibleNavbar">
-			<!-- Links -->
-			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link" href="#"><p
-							class="font-weight-bolder">For Employers</p></a></li>
-				<li class="nav-item"><a class="nav-link" href="../job/jobs.html"><p
-							class="font-weight-bolder">Browse Jobs</p></a></li>
-				<li class="nav-item"><a class="nav-link" href="reviews.html"><p
-							class="font-weight-bolder">Company Reviews</p></a></li>
-				<li class="nav-item"><a class="nav-link" href="../job/salary.html"><p
-							class="font-weight-bolder">Salaries</p></a></li>
-			</ul>
   
 <?php
 require_once '../util/util.php';
@@ -102,16 +73,9 @@ _END;
 }
 
 $userid = isset($_GET['userid']) ? $_GET['userid'] : "";
-echo <<<_END
- <ul class="navbar-nav ml-auto">
-    <li class="nav-item">
-      <a class="nav-link"  href="employer/signup.html"><p id="useridLink" class="font-weight-bolder">{$userid}</p></a>
-    </li>
 
-</ul>
-</nav>
 
-_END;
+
 
 // show the dashboard for this userid
 if (strlen($userid) > 0) {
@@ -149,7 +113,7 @@ _END;
         }
     } else {
         echo <<<_END
-                <tr><td  colspan="5">No records found</td></tr>";
+                <tr><td  colspan="5">No records found</td></tr>
 _END;
     }
     $jobs_result->close();
@@ -292,7 +256,18 @@ _END;
 
 
 
-
+<div id="footer"></div>
+	<script>
+		$("#header").load("/nxthire/html/util/header.html");
+		$("#footer").load("/nxthire/html/util/footer.html");
+		$(document).ready(function() {
+		    replace_login('<?php echo $userid; ?>');
+	        update_review_path('<?php echo $userid; ?>');
+		   hide_login_text_partial();
+		   $('#addreviewModal').find('.modal-body').load('addReview.html');
+		  });
+	
+	</script>
 
 
 
