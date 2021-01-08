@@ -28,6 +28,7 @@ Login as Job seeker
 •	Singup form is also there for job seeker “signup” button on navbar.
 
 Login as Employer
+
 •	One can see and search job posted by one.
 
 •	Edit the jobs you have posted active or inactive (delete).
