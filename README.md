@@ -15,6 +15,7 @@ You can follow these steps to test the implementation of rubric.
 5.	Market review is data analysis part of the project. Anyone can see the job demands by clicking on that “Market Review” button.
 
 Login as Job seeker  
+
 •	you can see jobs you have applied to. 
 
 •	One can withdraw from application.
